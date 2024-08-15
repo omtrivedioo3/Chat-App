@@ -1,40 +1,43 @@
-import React from 'react'
-import UseConversation from '../../zustend/UseConverstion'
-import { useSocketContext } from '../../context/SocketConext';
-
-function Conversation({conversation,lastIdx,emoji}) {
-  const {selectedConverstion,setSelectedConverstion}=UseConversation()
+import React from "react";
+import UseConversation from "../../zustend/UseConverstion";
+import { useSocketContext } from "../../context/SocketConext";
+import man from "./man.jpg";
+import woman from "./woman.jpg";
+// import LogoutButton from "./LogoutButton";
+function Conversation({ conversation, lastIdx, emoji }) {
+  const { selectedConverstion, setSelectedConverstion } = UseConversation();
 
   const isSelected = selectedConverstion?._id === conversation._id;
   const { onlineUsers } = useSocketContext();
   const isOnline = onlineUsers.includes(conversation._id);
-  
+
   return (
     <div>
-      <div className={`flex gap-2 items-center hover:bg-red-700 rounded p-2 py-1 cursor-pointer
-                      ${isSelected?"bg-red-700":""}
+      <div
+        className={`flex gap-2 items-center hover:bg-red-700 rounded p-2 py-1 cursor-pointer
+                      ${isSelected ? "bg-red-700" : ""}
                       `}
-          onClick={()=>setSelectedConverstion(conversation)}            
-        >
+        onClick={() => setSelectedConverstion(conversation)}
+      >
         <div className={`avatar ${isOnline ? "online" : ""}`}>
-            <div className='w-12 rounded-full'>
+          <div className="w-12 rounded-full">
             <img
-				src={conversation.profilepic}
-				alt='user avatar'
-                />
-            </div>
+              src={conversation.gender === "male" ? man : woman}
+              alt="user"
+            />
+            {onlineUsers.gender}
+          </div>
         </div>
-        <div className='flex flex-col flex-1'>
-            <div className='flex gap-3 justify-between'>
-                <p className='font-bold text-gray-200'>{conversation.fullname}</p>
-                <span className='text-xl'>{emoji}</span>
-            </div>
+        <div className="flex flex-col flex-1">
+          <div className="flex gap-3 justify-between">
+            <p className="font-bold text-gray-200">{conversation.fullname}</p>
+            <span className="text-xl">{emoji}</span>
+          </div>
         </div>
       </div>
-     {!lastIdx && <div className='divider py-0 my-0 h-1'/>}
-
+      {!lastIdx && <div className="divider py-0 my-0 h-1" />}
     </div>
-  )
+  );
 }
 
-export default Conversation
+export default Conversation;
